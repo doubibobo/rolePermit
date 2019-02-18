@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.infra.persistence.sql.UserMapper">
+
+  <resultMap id="BaseResultMap" type="com.example.model.User">
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.example.model.User">
+    insert into user (user_id, user_name, role_id
+      )
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}
+      )
+  </insert>
+
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from user
+    where user_id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select user_id, user_name, role_id
+    from user
+  </select>
+
+  <select id="selectMax" resultMap="BaseResultMap">
+    select max (user_id) as max
+    from user
+  </select>
+</mapper>

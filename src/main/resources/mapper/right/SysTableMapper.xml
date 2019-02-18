@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.infra.persistence.sql.SysTableMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.SysTable">
+    <result column="table_id" jdbcType="INTEGER" property="tableId" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="table_description" jdbcType="VARCHAR" property="tableDescription" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.example.model.SysTable">
+    insert into sys_table (table_id, `table_name`, table_description
+      )
+    values (#{tableId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, #{tableDescription,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from sys_table
+    where table_id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select table_id, `table_name`, table_description
+    from sys_table
+  </select>
+
+  <select id="selectMax" resultType="integer">
+    select max(table_id) as max
+    from sys_table
+  </select>
+</mapper>

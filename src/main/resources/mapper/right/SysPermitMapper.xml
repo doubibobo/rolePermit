@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.infra.persistence.sql.SysPermitMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.SysPermit">
+    <result column="permit_id" jdbcType="INTEGER" property="permitId" />
+    <result column="permit_name" jdbcType="VARCHAR" property="permitName" />
+    <result column="permit_description" jdbcType="VARCHAR" property="permitDescription" />
+    <result column="permit_url" jdbcType="VARCHAR" property="permitUrl" />
+    <result column="permit_table" jdbcType="INTEGER" property="permitTable" />
+    <result column="permit_rank" jdbcType="INTEGER" property="permitRank" />
+    <result column="permit_method" jdbcType="VARCHAR" property="permitMethod" />
+  </resultMap>
+  <insert id="insert" parameterType="com.example.model.SysPermit">
+    insert into sys_permit (permit_id, permit_name, permit_description, 
+      permit_url, permit_table, permit_rank, permit_method
+      )
+    values (#{permitId,jdbcType=INTEGER}, #{permitName,jdbcType=VARCHAR}, #{permitDescription,jdbcType=VARCHAR}, 
+      #{permitUrl,jdbcType=VARCHAR}, #{permitTable,jdbcType=INTEGER}, #{permitRank,jdbcType=INTEGER}, #{permitMethod,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from sys_permit
+    where permit_id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <update id="update" parameterType="com.example.model.SysPermit">
+    update sys_permit
+    set permit_name = #{permitName,jdbcType=VARCHAR},
+    permit_description = #{permitDescription,jdbcType=VARCHAR},
+    permit_url = #{permitUrl,jdbcType=VARCHAR},
+    permit_table = #{permitTable,jdbcType=INTEGER},
+    permit_rank = #{permitRank,jdbcType=INTEGER},
+    permit_method = #{permitMethod,jdbcType=VARCHAR}
+    where permit_id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select permit_id, permit_name, permit_description, permit_url, permit_table, permit_rank, permit_method
+    from sys_permit
+  </select>
+
+  <select id="selectMax" resultType="integer">
+    select max(permit_id) as max
+    from sys_permit
+  </select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.infra.persistence.sql.SysRoleUserMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.SysRoleUser">
+    <result column="role_user_id" jdbcType="INTEGER" property="roleUserId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+  </resultMap>
+
+  <resultMap id="ExtendResultMap" type="com.example.response.UserRoleResponse">
+    <result column="role_user_id" jdbcType="INTEGER" property="roleUserId"/>
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_description" jdbcType="VARCHAR" property="roleDescription" />
+    <result column="role_rank" jdbcType="INTEGER" property="roleRank" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.example.model.SysRoleUser">
+    insert into sys_role_user (role_user_id, user_id, role_id
+      )
+    values (#{roleUserId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from sys_role_user
+    where role_user_id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select role_user_id, user_id, role_id
+    from sys_role_user
+  </select>
+
+  <select id="selectByRoleUserId" resultMap="ExtendResultMap" parameterType="java.lang.Integer">
+    select sys_role_user.role_user_id, sys_role_user.user_id, sys_role_user.role_id
+    from sys_role_user
+    where sys_role_user.role_user_id = #{id, jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByUserId" resultMap="ExtendResultMap" parameterType="java.lang.Integer">
+    select sys_role_user.role_user_id, sys_role_user.user_id, sys_role_user.role_id, role.user.user_name, sys_role.role_name, sys_role.role_description, sys_role.role_rank
+    from sys_role_user,role.user,sys_role
+    where sys_role_user.role_id = sys_role.role_id
+      and sys_role_user.user_id = role.user.user_id
+      and sys_role_user.user_id = #{id, jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAllByUserId" resultMap="ExtendResultMap" parameterType="java.lang.Integer">
+    select sys_role_user.role_user_id, sys_role_user.user_id, sys_role_user.role_id, role.user.user_name, sys_role.role_name, sys_role.role_description, sys_role.role_rank
+    from sys_role_user,role.user,sys_role
+    where sys_role_user.role_id = sys_role.role_id
+      and sys_role_user.user_id = role.user.user_id
+  </select>
+
+  <select id="selectMax" resultType="integer">
+    select max(role_user_id)
+    from sys_role_user
+  </select>
+
+</mapper>
